@@ -83,7 +83,7 @@ For example:
 	
 3. keep on appending the data point in list. 
 
-### Now we have say 100 data points. generated.. they will form 3 separate clusters because they are geenreated from 3 separate means and co-variances. 
+### Now we have say 100 data points. generated.. they will form 3 separate clusters because they are generated from 3 separate means and co-variances. 
 
 # Now we have to run the EM algorithm
   
