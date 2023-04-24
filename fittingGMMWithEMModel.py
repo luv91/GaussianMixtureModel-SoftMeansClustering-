@@ -380,3 +380,118 @@ def EM(data, init_means, init_covariances, init_weights, maxiter=1000, thresh=1e
 # # Run EM 
 # results = EM(data, initial_means, initial_covs, initial_weights)
 # =============================================================================
+#%% Generating Points and clusters based on some initial given weight, means and co-variances
+
+# =============================================================================
+# The function then iterates num_data times to generate the required number of data points:
+# 
+# a. The np.random.choice function is used to randomly choose a cluster index k. 
+# The choice is based on the probability distribution specified by weights. 
+# This means that clusters with higher weights will have a higher chance of 
+# being chosen to generate a data point.
+# 
+# b. After selecting a cluster index k, the np.random.multivariate_normal function
+# is used to generate a data point x from the Gaussian distribution specified by 
+# the mean (means[k]) and covariance (covariances[k]) of the chosen cluster.
+# 
+# c. The generated data point x is then appended to the data list.
+# =============================================================================
+
+def generate_MoG_data(num_data, means, covariances, weights):
+    """ Creates a list of data points """
+    num_clusters = len(weights)
+    data = []
+    for i in range(num_data):
+        #  Use np.random.choice and weights to pick a cluster id greater than or equal to 0 and less than num_clusters.
+        k = np.random.choice(len(weights), 1, p=weights)[0]
+        #print("Line 8: k", k)
+
+        # Use np.random.multivariate_normal to create data from this cluster
+        x = np.random.multivariate_normal(means[k], covariances[k])
+
+        data.append(x)
+    return data
+
+# Model parameters
+init_means = [
+    [5, 0], # mean of cluster 1
+    [1, 1], # mean of cluster 2
+    [0, 5]  # mean of cluster 3
+]
+init_covariances = [
+    [[.5, 0.], [0, .5]], # covariance of cluster 1
+    [[.92, .38], [.38, .91]], # covariance of cluster 2
+    [[.5, 0.], [0, .5]]  # covariance of cluster 3
+]
+init_weights = [1/4., 1/2., 1/4.]  # weights of each cluster
+
+# Generate data
+np.random.seed(4)
+data = generate_MoG_data(100, init_means, init_covariances, init_weights)
+
+plt.figure()
+d = np.vstack(data)
+plt.plot(d[:,0], d[:,1],'ko')
+plt.rcParams.update({'font.size':16})
+plt.tight_layout()
+
+#%% We have data from above, now what can we do?
+
+# choose three random points from length of data, these are three random points from data. 
+# initial length of data above is 100.
+
+chosen = np.random.choice(len(data), 3, replace=False)
+
+# get means for these three random points. 
+initial_means = [data[x] for x in chosen]
+
+
+# np.cov(data, rowvar=0): This function call computes the 
+#covariance matrix of the input data using numpy's cov function.
+ #The rowvar=0 argument specifies that each row in data represents
+# a variable (Datapoint) and each column represents an observation. If rowvar
+# is set to 1, it would interpret each column as a variable and 
+# each row as an observation.
+
+# =============================================================================
+# [np.cov(data, rowvar=0)] * 3: The list containing a single covariance 
+# matrix is multiplied by 3. This replicates the list three times, 
+# resulting in a list containing three identical covariance matrices.
+#  In this case, it means that the initial covariance matrices for 
+#  all three Gaussian components are set to the same value, which 
+#  is the covariance matrix of the entire dataset.
+# =============================================================================
+initial_covs = [np.cov(data, rowvar=0)] * 3
+initial_weights = [1/3.] * 3
+
+# Run EM 
+results = EM(data, initial_means, initial_covs, initial_weights)
+#%% check plotting part in Jupyter notebook
+import matplotlib.mlab as mlab
+from scipy.stats import multivariate_normal
+def plot_contours(data, means, covs, title):
+    plt.figure()
+    plt.plot([x[0] for x in data], [y[1] for y in data],'ko') # data
+
+    delta = 0.025
+    k = len(means)
+    x = np.arange(-2.0, 7.0, delta)
+    y = np.arange(-2.0, 7.0, delta)
+    X, Y = np.meshgrid(x, y)
+    col = ['green', 'red', 'indigo']
+    for i in range(k):
+        mean = means[i]
+        cov = covs[i]
+        sigmax = np.sqrt(cov[0][0])
+        sigmay = np.sqrt(cov[1][1])
+        sigmaxy = cov[0][1]/(sigmax*sigmay)
+        rv = multivariate_normal(mean, cov)
+
+        # Evaluate the PDF on a grid of points
+        Z = rv.pdf(np.dstack((X, Y)))
+#         Z = mlab.bivariate_normal(X, Y, sigmax, sigmay, mean[0], mean[1], sigmaxy)
+plot_contours(data, initial_means, initial_covs, 'Initial clusters')
+# Parameters after running EM to convergence
+results = EM(data, initial_means, initial_covs, initial_weights)
+    
+plot_contours(data, results['means'], results['covs'], 'Final clusters')
