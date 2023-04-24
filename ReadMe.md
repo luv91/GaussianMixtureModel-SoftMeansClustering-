@@ -26,10 +26,10 @@ For example:
 
 # Model parameters
 1. ### init_means = 
-	[   # 3 by 2, with 3 being 3 distributions/cluster, and 2 being data is 2-D. 
-    [5, 0], # mean of cluster 1  # 2 dimension because each cluster is having 2 dimension
-    [1, 1], # mean of cluster 2
-    [0, 5]  # mean of cluster 3
+	a. [   # 3 by 2, with 3 being 3 distributions/cluster, and 2 being data is 2-D. 
+    b. [5, 0], # mean of cluster 1  # 2 dimension because each cluster is having 2 dimension
+    c. [1, 1], # mean of cluster 2
+    d. [0, 5]  # mean of cluster 3
 ]
 2. ###init_covariances = 
 	[ # 3 by 2 by 2 
@@ -39,6 +39,31 @@ For example:
 ]
 3. ### init_weights = 
 	[1/4., 1/2., 1/4.]  # weights of each cluster
+
+# Model Parameter
+1. ### init_means
+   | Cluster | Mean Vector |
+   | ------- | ----------- |
+   | 1       | `[5, 0]`    |
+   | 2       | `[1, 1]`    |
+   | 3       | `[0, 5]`    |
+
+2. ### init_covariances
+   | Cluster | Covariance Matrix |
+   | ------- | ----------------- |
+   | 1       | `[[.5, 0.],`      |
+   |         | ` [0, .5]]`       |
+   | 2       | `[[.92, .38],`    |
+   |         | ` [.38, .91]]`    |
+   | 3       | `[[.5, 0.],`      |
+   |         | ` [0, .5]]`       |
+
+3. ### init_weights
+   | Weights      |
+   | ------------ |
+   | `1/4`        |
+   | `1/2`        |
+   | `1/4`        |
 
 # Generating data. 
 
@@ -52,6 +77,8 @@ For example:
 	we want to generate a data point from the multivariate normal distribution. (multivariante because data is 2d, two axis (x1, x2); (red, green)
 	
 	-->  take the cluster center number, use the corersponding mean and covraiances of that cluster center number (provided initial data above)
+	### Initial cluster:
+	![Alt text](D:\computer science\Coding One Stop\NortheasternSubjects\GaussianMixtureModel-SoftMeansClustering-\Initial_Cluster.png "Optional title")
 	--> run multivariate normal distribution to sample from it. x = np.random.multivariate_normal(means[k], covariances[k])
 	
 3. keep on appending the data point in list. 
@@ -59,10 +86,11 @@ For example:
 ### Now we have say 100 data points. generated.. they will form 3 separate clusters because they are geenreated from 3 separate means and co-variances. 
 
 # Now we have to run the EM algorithm
-  We have 100 datapoints information (say, we have generated 100 points)
-  Choose 3 points out of 100 at random, and generate means, covariances and weightsfor those 3 points. 
-  These three means, cov-raiances and weights represent that of a whole dataset. it is a simple iinitialization, so clusters can overlap initially. (for example if 2 out of 3 cluster have same/nearby mean)
-  Now run EM algorithm on this. After some iterations, you will see that EM algorithm converged. (final cluster plot)
+  
+  1. We have 100 datapoints information (say, we have generated 100 points)
+  2. Choose 3 points out of 100 at random, and generate means, covariances and weightsfor those 3 points. 
+  3. These three means, cov-raiances and weights represent that of a whole dataset. it is a simple iinitialization, so clusters can overlap initially. (for example if 2 out of 3 cluster have same/nearby mean)
+  4. Now run EM algorithm on this. After some iterations, you will see that EM algorithm converged. (final cluster plot)
 
 
 
