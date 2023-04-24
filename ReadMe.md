@@ -78,7 +78,7 @@ For example:
 	
 	-->  take the cluster center number, use the corersponding mean and covraiances of that cluster center number (provided initial data above)
 	### Initial cluster:
-	![Alt text](D:\computer science\Coding One Stop\NortheasternSubjects\GaussianMixtureModel-SoftMeansClustering-\Initial_Cluster.png "Optional title")
+	![Alt text](https://github.com/luv91/GaussianMixtureModel-SoftMeansClustering-\Initial_Cluster.png "Optional title")
 	--> run multivariate normal distribution to sample from it. x = np.random.multivariate_normal(means[k], covariances[k])
 	
 3. keep on appending the data point in list. 
