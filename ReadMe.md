@@ -16,7 +16,7 @@ These steps are explained in detail in python notebook: fittingGMMWithEMModel.py
     
     3e. If not broken, update old log likelihood with the new log likelihood value
     
-### Question: how can we Test it
+# Question: how can we Test it
 ### Testing Phase:
 
 1. assumption 1: we are taking three distributions/clusters
@@ -25,21 +25,24 @@ These steps are explained in detail in python notebook: fittingGMMWithEMModel.py
 For example:
 
 # Model parameters
-init_means = [   # 3 by 2, with 3 being 3 distributions/cluster, and 2 being data is 2-D. 
+1. ### init_means = 
+	[   # 3 by 2, with 3 being 3 distributions/cluster, and 2 being data is 2-D. 
     [5, 0], # mean of cluster 1  # 2 dimension because each cluster is having 2 dimension
     [1, 1], # mean of cluster 2
     [0, 5]  # mean of cluster 3
 ]
-init_covariances = [ # 3 by 2 by 2 
+2. ###init_covariances = 
+	[ # 3 by 2 by 2 
     [[.5, 0.], [0, .5]], # covariance of cluster 1  # 2 by 2 because each cluster is 2-d, so two axis will interact with each other. 
     [[.92, .38], [.38, .91]], # covariance of cluster 2
     [[.5, 0.], [0, .5]]  # covariance of cluster 3
 ]
-init_weights = [1/4., 1/2., 1/4.]  # weights of each cluster
+3. ### init_weights = 
+	[1/4., 1/2., 1/4.]  # weights of each cluster
 
-### Generating data. 
+# Generating data. 
 
-Say we have to generate 100 datapoints.  How to generate?
+### Say we have to generate 100 datapoints.  How to generate?
 
 1. Generate cluster number: we have 3 clusters, so randomly generate 3 numers between 0,1 and 2 (because 3 clusters) according to assigned weight. 
 	means if weight of cluster 0 is 60%, so 60% of time number 0 will be generated. 
@@ -56,10 +59,10 @@ Say we have to generate 100 datapoints.  How to generate?
 ### Now we have say 100 data points. generated.. they will form 3 separate clusters because they are geenreated from 3 separate means and co-variances. 
 
 # Now we have to run the EM algorithm
-### but first we have 100 datapoints information (say, we have generated 100 points)
-### choose 3 points out of 100 at random, and generate means, covariances and weightsfor those 3 points. 
-### these three means, cov-raiances and weights represent that of a whole dataset. it is a simple iinitialization, so clusters can overlap initially. (for example if 2 out of 3 cluster have same/nearby mean)
-### Now run EM algorithm on this. After some iterations, you will see that EM algorithm converged. (final cluster plot)
+  We have 100 datapoints information (say, we have generated 100 points)
+  Choose 3 points out of 100 at random, and generate means, covariances and weightsfor those 3 points. 
+  These three means, cov-raiances and weights represent that of a whole dataset. it is a simple iinitialization, so clusters can overlap initially. (for example if 2 out of 3 cluster have same/nearby mean)
+  Now run EM algorithm on this. After some iterations, you will see that EM algorithm converged. (final cluster plot)
 
 
 
